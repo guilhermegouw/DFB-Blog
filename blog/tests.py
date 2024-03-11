@@ -9,6 +9,19 @@ def test_home_status_code(client, db):
     assert response.status_code == 200
 
 
+def test_home_greeting_user(client, db, test_user):
+    client.force_login(test_user)
+    url = reverse("home")
+    response = client.get(url)
+    assert f"Hi {test_user.username}!" in response.content.decode()
+
+
+def test_home_unauthenticated_user(client, db):
+    url = reverse("home")
+    response = client.get(url)
+    assert "You are not logged in." in response.content.decode()
+
+
 def test_home_template(client, db):
     url = reverse("home")
     response = client.get(url)
@@ -17,7 +30,6 @@ def test_home_template(client, db):
 
 
 def test_home_template_content(client, db, post_factory):
-    # post = post_factory(title='Blog post title', body='Blog post body')
     url = reverse("home")
     response = client.get(url)
     assert "Django Blog" in str(response.content)
