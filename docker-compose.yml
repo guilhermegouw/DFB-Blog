@@ -1,0 +1,16 @@
+# docker compose for a project with service = db postgresql
+version: "3.5"
+services:
+  database:
+    container_name: database_blog
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      - LC_ALL=C.UTF-8
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=blog
+    ports:
+      - "5432:5432"
